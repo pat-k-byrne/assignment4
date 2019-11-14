@@ -9,3 +9,63 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(tidyverse)
+library(janitor)
+library(here)
+
+lob.df <- read_csv(here('lobster_abundance_sbc_lter.csv'),
+                   na = '-99999') %>% 
+  clean_names()
+```
+
+```{r}
+lob.tidy <- lob.df %>% 
+  uncount(count)
+
+lob.ms <- lob.tidy %>% 
+  count(year,site) %>% 
+  mutate(
+    status = case_when(
+      site %in% c('NAPL','IVEE') ~ 'Marine Protected Area',
+      site %in% c('AQUE','CARP','MOHK') ~ 'Unprotected Area')
+    ) %>% 
+  mutate(
+    sitename = case_when(
+      site == 'AQUE' ~ 'Arroyo Quemado',
+      site == 'MOHK' ~ 'Mohawk',
+      site == 'CARP' ~ 'Carpenteria',
+      site == 'NAPL' ~ 'Naples',
+      site == 'IVEE' ~ 'Isla Vista')
+  )
+
+```
+
+
+```{r}
+ggplot() +
+  geom_line(data = lob.ms, aes(x = year, y = n, color = sitename, lty = status),
+            lwd = 1.05) +
+  scale_x_continuous(limits = c(2012,2018), 
+                     expand = c(0.01,0.1)) +
+  scale_y_continuous(limits = c(0,1000), 
+                     expand = c(0.01,0.1),
+                     breaks = seq(0,1000,200)) +
+  labs(title = 'Spiny Lobster Annual Abundance',
+       x = 'Year',
+       y = 'Lobster Count',
+       color = 'Site',
+       lty = 'Site Protection Status') +
+  theme(axis.line = element_line(color = 'grey50',
+                                 size = 0.5),
+        panel.background = element_rect(fill = 'white',
+                                        colour = 'white'),
+        panel.grid.major = element_line(size = 0.5, 
+                                        linetype = 'solid',
+                                        colour = "grey95"),
+        legend.position = c(0.15,0.65),
+        legend.background = element_blank(),
+        legend.text = element_text(size = 11),
+        plot.title = element_text(size = 16)) 
+```
+
