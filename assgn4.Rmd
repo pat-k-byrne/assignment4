@@ -6,7 +6,9 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = F,
+                      message = F,
+                      warning = F)
 ```
 
 ```{r}
@@ -63,16 +65,17 @@ ggplot() +
         panel.grid.major = element_line(size = 0.5, 
                                         linetype = 'solid',
                                         colour = "grey95"),
-        legend.position = c(0.15,0.65),
-        legend.background = element_blank(),
+        legend.position = c(0.20,0.65),
+        legend.background = element_rect(fill = 'white'),
         legend.text = element_text(size = 11),
+        legend.key = element_rect(fill = NA),
         plot.title = element_text(size = 16)) 
 ```
 
 
 ```{r}
 
-comp.df.all <- lob.df %>% 
+comp.df.all <- lob.tidy %>% 
   filter(
     year %in% c(2012,2018)) %>% 
   mutate(
@@ -95,42 +98,42 @@ comp.df.all <- lob.df %>%
       site %in% c('AQUE','CARP','MOHK') ~ 'Unprotected Area')
     ) 
 
-comp.df.mpa <- lob.df %>% 
-  filter(
-    year %in% c(2012,2018)) %>% 
-  filter(
-    site %in% c('NAPL','IVEE')
-  ) %>%
-  mutate(
-    cyear = as.character(year)
-  ) %>% 
-  mutate(
-    sitename = case_when(
-      site == 'AQUE' ~ 'Arroyo Quemado',
-      site == 'MOHK' ~ 'Mohawk',
-      site == 'CARP' ~ 'Carpenteria',
-      site == 'NAPL' ~ 'Naples',
-      site == 'IVEE' ~ 'Isla Vista')
-  )
-
-
-comp.df.nonmpa <- lob.df %>% 
-  filter(
-    year %in% c(2012,2018)) %>% 
-  filter(
-    site %in% c('AQUE','CARP','MOHK')
-  ) %>% 
-  mutate(
-    cyear = as.character(year)
-  ) %>% 
-  mutate(
-    sitename = case_when(
-      site == 'AQUE' ~ 'Arroyo Quemado',
-      site == 'MOHK' ~ 'Mohawk',
-      site == 'CARP' ~ 'Carpenteria',
-      site == 'NAPL' ~ 'Naples',
-      site == 'IVEE' ~ 'Isla Vista')
-  )
+# comp.df.mpa <- lob.df %>% 
+#   filter(
+#     year %in% c(2012,2018)) %>% 
+#   filter(
+#     site %in% c('NAPL','IVEE')
+#   ) %>%
+#   mutate(
+#     cyear = as.character(year)
+#   ) %>% 
+#   mutate(
+#     sitename = case_when(
+#       site == 'AQUE' ~ 'Arroyo Quemado',
+#       site == 'MOHK' ~ 'Mohawk',
+#       site == 'CARP' ~ 'Carpenteria',
+#       site == 'NAPL' ~ 'Naples',
+#       site == 'IVEE' ~ 'Isla Vista')
+#   )
+# 
+# 
+# comp.df.nonmpa <- lob.df %>% 
+#   filter(
+#     year %in% c(2012,2018)) %>% 
+#   filter(
+#     site %in% c('AQUE','CARP','MOHK')
+#   ) %>% 
+#   mutate(
+#     cyear = as.character(year)
+#   ) %>% 
+#   mutate(
+#     sitename = case_when(
+#       site == 'AQUE' ~ 'Arroyo Quemado',
+#       site == 'MOHK' ~ 'Mohawk',
+#       site == 'CARP' ~ 'Carpenteria',
+#       site == 'NAPL' ~ 'Naples',
+#       site == 'IVEE' ~ 'Isla Vista')
+#   )
 ```
 
 ```{r}
@@ -211,6 +214,34 @@ ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
 
 ```{r}
 
+mpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 & 
+                                 comp.df.all$status == 'Marine Protected Area']
+mpa2012 <- mpa2012[!is.na(mpa2012)]
+
+
+mpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 & 
+                                 comp.df.all$status == 'Marine Protected Area']
+mpa2018 <- mpa2018[!is.na(mpa2018)]
+
+
+nonmpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 & 
+                                    comp.df.all$status == 'Unprotected Area']
+nonmpa2012 <- nonmpa2012[!is.na(nonmpa2012)]
+
+
+nonmpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 & 
+                                    comp.df.all$status == 'Unprotected Area']
+nonmpa2018 <- nonmpa2018[!is.na(nonmpa2018)]
+
+```
+
+
+```{r}
+
+t.test(mpa2012, nonmpa2012)
+t.test(mpa2018, nonmpa2018)
+t.test(mpa2012, mpa2018)
+t.test(nonmpa2012, nonmpa2018)
 
 
 ```
