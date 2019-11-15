@@ -15,6 +15,8 @@ knitr::opts_chunk$set(echo = F,
 library(tidyverse)
 library(janitor)
 library(here)
+library(effsize) 
+library(kableExtra) 
 
 lob.df <- read_csv(here('lobster_abundance_sbc_lter.csv'),
                    na = '-99999') %>% 
@@ -64,7 +66,7 @@ ggplot() +
                                         colour = 'white'),
         panel.grid.major = element_line(size = 0.5, 
                                         linetype = 'solid',
-                                        colour = "grey95"),
+                                        colour = "grey90"),
         legend.position = c(0.20,0.65),
         legend.background = element_rect(fill = 'white'),
         legend.text = element_text(size = 11),
@@ -214,35 +216,62 @@ ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
 
 ```{r}
 
-mpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 & 
-                                 comp.df.all$status == 'Marine Protected Area']
+mpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 & comp.df.all$status == 'Marine Protected Area']
 mpa2012 <- mpa2012[!is.na(mpa2012)]
 
 
-mpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 & 
-                                 comp.df.all$status == 'Marine Protected Area']
+mpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 & comp.df.all$status == 'Marine Protected Area']
 mpa2018 <- mpa2018[!is.na(mpa2018)]
 
 
-nonmpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 & 
-                                    comp.df.all$status == 'Unprotected Area']
+nonmpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 & comp.df.all$status == 'Unprotected Area']
 nonmpa2012 <- nonmpa2012[!is.na(nonmpa2012)]
 
 
-nonmpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 & 
-                                    comp.df.all$status == 'Unprotected Area']
+nonmpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 & comp.df.all$status == 'Unprotected Area']
 nonmpa2018 <- nonmpa2018[!is.na(nonmpa2018)]
+
+```
+
+```{r}
+
+means <- c(mean(mpa2012), mean(mpa2018), mean(nonmpa2012), mean(nonmpa2018))
+stdevs <- c(sd(mpa2012), sd(mpa2018), sd(nonmpa2012), sd(nonmpa2018))
+ns <- c(length(mpa2012), length(mpa2018), length(nonmpa2012), length(nonmpa2018))
+status <- c('MPA','MPA','Non-MPA','Non-MPA')
+year <- c(2012,2018,2012,2018)
+
+summary.df <- tibble(status, year, means, stdevs, ns)
+
+summary.df %>% 
+  kable(col.names = c("Protection Status", 
+                     "Year", 
+                     "Mean Size (mm)",
+                     'St. Dev.',
+                     'Sample Size')
+        ) %>% 
+  kable_styling(bootstrap_options = "striped", 
+                full_width = F,
+                position = "left"
+                ) %>% 
+  add_header_above(c("Lobster metrics" = 5))
 
 ```
 
 
 ```{r}
 
-t.test(mpa2012, nonmpa2012)
-t.test(mpa2018, nonmpa2018)
-t.test(mpa2012, mpa2018)
-t.test(nonmpa2012, nonmpa2018)
+t.2012 <- t.test(mpa2012, nonmpa2012)
+d.2012 <- cohen.d(mpa2012,nonmpa2012)
 
+t.2018 <- t.test(mpa2018, nonmpa2018)
+d.2018 <- cohen.d(mpa2018, nonmpa2018)
+
+t.mpa <- t.test(mpa2012, mpa2018)
+d.mpa <- cohen.d(mpa2012, mpa2018)
+
+t.nonmpa <- t.test(nonmpa2012, nonmpa2018)
+d.nonmpa <- cohen.d(nonmpa2012, nonmpa2018)
 
 ```
 
