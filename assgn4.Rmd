@@ -69,3 +69,149 @@ ggplot() +
         plot.title = element_text(size = 16)) 
 ```
 
+
+```{r}
+
+comp.df.all <- lob.df %>% 
+  filter(
+    year %in% c(2012,2018)) %>% 
+  mutate(
+    cyear = as.character(year)
+  ) %>% 
+  mutate(
+    sitename = case_when(
+      site == 'AQUE' ~ 'Arroyo Quemado',
+      site == 'MOHK' ~ 'Mohawk',
+      site == 'CARP' ~ 'Carpenteria',
+      site == 'NAPL' ~ 'Naples',
+      site == 'IVEE' ~ 'Isla Vista')
+  ) %>% 
+  mutate(
+    sitename = factor(sitename, levels = c('Arroyo Quemado', 'Carpenteria', 'Mohawk', 'Naples','Isla Vista'))
+  ) %>% 
+  mutate(
+    status = case_when(
+      site %in% c('NAPL','IVEE') ~ 'Marine Protected Area',
+      site %in% c('AQUE','CARP','MOHK') ~ 'Unprotected Area')
+    ) 
+
+comp.df.mpa <- lob.df %>% 
+  filter(
+    year %in% c(2012,2018)) %>% 
+  filter(
+    site %in% c('NAPL','IVEE')
+  ) %>%
+  mutate(
+    cyear = as.character(year)
+  ) %>% 
+  mutate(
+    sitename = case_when(
+      site == 'AQUE' ~ 'Arroyo Quemado',
+      site == 'MOHK' ~ 'Mohawk',
+      site == 'CARP' ~ 'Carpenteria',
+      site == 'NAPL' ~ 'Naples',
+      site == 'IVEE' ~ 'Isla Vista')
+  )
+
+
+comp.df.nonmpa <- lob.df %>% 
+  filter(
+    year %in% c(2012,2018)) %>% 
+  filter(
+    site %in% c('AQUE','CARP','MOHK')
+  ) %>% 
+  mutate(
+    cyear = as.character(year)
+  ) %>% 
+  mutate(
+    sitename = case_when(
+      site == 'AQUE' ~ 'Arroyo Quemado',
+      site == 'MOHK' ~ 'Mohawk',
+      site == 'CARP' ~ 'Carpenteria',
+      site == 'NAPL' ~ 'Naples',
+      site == 'IVEE' ~ 'Isla Vista')
+  )
+```
+
+```{r}
+ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
+  geom_density(adjust = 1.5,alpha = 0.4) +
+  scale_x_continuous(limits = c(30,160), 
+                     expand = c(0.01,0.1)) +
+  scale_y_continuous(limits = c(0,0.045)) +
+  facet_wrap(~sitename, scales = 'free') +
+  annotate("text",
+           x = 0.85,
+           y = 0.25,
+           label = "Bird nesting sites vulnerable to predation",
+           size = 3) +
+  theme(axis.line = element_line(color = 'grey50',
+                                 size = 0.5),
+        panel.background = element_rect(fill = 'white',
+                                        colour = 'white'),
+        panel.grid.major = element_line(size = 0.5, 
+                                        linetype = 'solid',
+                                        colour = "grey95"),
+        legend.position = c(0.85,0.25),
+        legend.background = element_blank(),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        plot.title = element_text(size = 17),
+        plot.subtitle = element_text(size = 10)) +
+  labs(title = 'Spiny Lobster Size Distributions',
+       subtitle = 'Top Row: Unprotected Areas, Bottom Row: Marine Protected Areas',
+       x = 'Estimated Size (mm)',
+       y = 'Density',
+       fill = 'Year') 
+
+# ggplot(comp.df.mpa, aes(x = size_mm, group = cyear, fill = cyear)) +
+#   geom_density(adjust = 1.5,alpha = 0.4) +
+#   scale_x_continuous(limits = c(30,160), 
+#                      expand = c(0.01,0.1)) +
+#   scale_y_continuous(limits = c(0,0.045)) +
+#   facet_wrap(~sitename, scales = 'free') +
+#   theme(axis.line = element_line(color = 'grey50',
+#                                  size = 0.5),
+#         panel.background = element_rect(fill = 'white',
+#                                         colour = 'white'),
+#         panel.grid.major = element_line(size = 0.5, 
+#                                         linetype = 'solid',
+#                                         colour = "grey95"),
+#         legend.background = element_blank(),
+#         legend.text = element_text(size = 11),
+#         plot.title = element_text(size = 16)) +
+#   labs(title = 'Lobster Size Distribution - Marine Protected Areas',
+#        x = 'Estimated Size (mm)',
+#        y = 'Density',
+#        fill = 'Year') 
+# 
+# ggplot(comp.df.nonmpa, aes(x = size_mm, group = cyear, fill = cyear,lty = cyear)) +
+#   geom_density(adjust = 1.5,alpha = 0.4) +
+#   scale_x_continuous(limits = c(30,160), 
+#                      expand = c(0.01,0.1)) +
+#   scale_y_continuous(limits = c(0,0.045)) +
+#   facet_wrap(~sitename, scales = 'free') +
+#   theme(axis.line = element_line(color = 'grey50',
+#                                  size = 0.5),
+#         panel.background = element_rect(fill = 'white',
+#                                         colour = 'white'),
+#         panel.grid.major = element_line(size = 0.5, 
+#                                         linetype = 'solid',
+#                                         colour = "grey95"),
+#         legend.background = element_blank(),
+#         legend.text = element_text(size = 11),
+#         plot.title = element_text(size = 16)) +
+#   labs(title = 'Lobster Size Distribution - Unprotected Areas',
+#        x = 'Estimated Size (mm)',
+#        y = 'Density',
+#        fill = 'Year') 
+
+```
+
+
+```{r}
+
+
+
+```
+
