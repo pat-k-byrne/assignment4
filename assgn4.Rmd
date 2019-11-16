@@ -100,45 +100,10 @@ comp.df.all <- lob.tidy %>%
       site %in% c('AQUE','CARP','MOHK') ~ 'Unprotected Area')
     ) 
 
-# comp.df.mpa <- lob.df %>% 
-#   filter(
-#     year %in% c(2012,2018)) %>% 
-#   filter(
-#     site %in% c('NAPL','IVEE')
-#   ) %>%
-#   mutate(
-#     cyear = as.character(year)
-#   ) %>% 
-#   mutate(
-#     sitename = case_when(
-#       site == 'AQUE' ~ 'Arroyo Quemado',
-#       site == 'MOHK' ~ 'Mohawk',
-#       site == 'CARP' ~ 'Carpenteria',
-#       site == 'NAPL' ~ 'Naples',
-#       site == 'IVEE' ~ 'Isla Vista')
-#   )
-# 
-# 
-# comp.df.nonmpa <- lob.df %>% 
-#   filter(
-#     year %in% c(2012,2018)) %>% 
-#   filter(
-#     site %in% c('AQUE','CARP','MOHK')
-#   ) %>% 
-#   mutate(
-#     cyear = as.character(year)
-#   ) %>% 
-#   mutate(
-#     sitename = case_when(
-#       site == 'AQUE' ~ 'Arroyo Quemado',
-#       site == 'MOHK' ~ 'Mohawk',
-#       site == 'CARP' ~ 'Carpenteria',
-#       site == 'NAPL' ~ 'Naples',
-#       site == 'IVEE' ~ 'Isla Vista')
-#   )
 ```
 
 ```{r}
+
 ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
   geom_density(adjust = 1.5,alpha = 0.4) +
   scale_x_continuous(limits = c(30,160), 
@@ -170,48 +135,6 @@ ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
        y = 'Density',
        fill = 'Year') 
 
-# ggplot(comp.df.mpa, aes(x = size_mm, group = cyear, fill = cyear)) +
-#   geom_density(adjust = 1.5,alpha = 0.4) +
-#   scale_x_continuous(limits = c(30,160), 
-#                      expand = c(0.01,0.1)) +
-#   scale_y_continuous(limits = c(0,0.045)) +
-#   facet_wrap(~sitename, scales = 'free') +
-#   theme(axis.line = element_line(color = 'grey50',
-#                                  size = 0.5),
-#         panel.background = element_rect(fill = 'white',
-#                                         colour = 'white'),
-#         panel.grid.major = element_line(size = 0.5, 
-#                                         linetype = 'solid',
-#                                         colour = "grey95"),
-#         legend.background = element_blank(),
-#         legend.text = element_text(size = 11),
-#         plot.title = element_text(size = 16)) +
-#   labs(title = 'Lobster Size Distribution - Marine Protected Areas',
-#        x = 'Estimated Size (mm)',
-#        y = 'Density',
-#        fill = 'Year') 
-# 
-# ggplot(comp.df.nonmpa, aes(x = size_mm, group = cyear, fill = cyear,lty = cyear)) +
-#   geom_density(adjust = 1.5,alpha = 0.4) +
-#   scale_x_continuous(limits = c(30,160), 
-#                      expand = c(0.01,0.1)) +
-#   scale_y_continuous(limits = c(0,0.045)) +
-#   facet_wrap(~sitename, scales = 'free') +
-#   theme(axis.line = element_line(color = 'grey50',
-#                                  size = 0.5),
-#         panel.background = element_rect(fill = 'white',
-#                                         colour = 'white'),
-#         panel.grid.major = element_line(size = 0.5, 
-#                                         linetype = 'solid',
-#                                         colour = "grey95"),
-#         legend.background = element_blank(),
-#         legend.text = element_text(size = 11),
-#         plot.title = element_text(size = 16)) +
-#   labs(title = 'Lobster Size Distribution - Unprotected Areas',
-#        x = 'Estimated Size (mm)',
-#        y = 'Density',
-#        fill = 'Year') 
-
 ```
 
 
@@ -242,8 +165,6 @@ stdevs <- c(sd(mpa2012), sd(mpa2018), sd(nonmpa2012), sd(nonmpa2018))
 stdevs <- round(stdevs,2)
 ns <- c(length(mpa2012), length(mpa2018), length(nonmpa2012), length(nonmpa2018))
 ns <- as.integer(ns)
-status <- c('MPA','MPA','Non-MPA','Non-MPA')
-year <- c(2012,2018,2012,2018)
 
 mpa2012.sum <- c(means[1],stdevs[1],ns[1])
 mpa2018.sum <- c(means[2],stdevs[2],ns[2])
@@ -251,39 +172,29 @@ nonmpa2012.sum <- c(means[3],stdevs[3],ns[3])
 nonmpa2018.sum <- c(means[4],stdevs[4],ns[4])
 metrics <- c('Mean (mm)','Std. Deviation (mm)','Sample Size')
 
-summary.df <- tibble(status, year, means, stdevs, ns)
-summary.df.2 <- tibble(metrics, mpa2012.sum, mpa2018.sum, nonmpa2012.sum, nonmpa2018.sum)
+summary.df <- tibble(metrics, mpa2012.sum, mpa2018.sum, nonmpa2012.sum, nonmpa2018.sum)
 
+```
+
+
+```{r}
+
+future.columns <- c('Statistic', '2012', '2018', '2012', '2018')
 
 summary.df %>% 
-  kable(col.names = c("Protection Status", 
-                     "Year", 
-                     "Mean Size (mm)",
-                     'St. Dev.',
-                     'Sample Size')) %>% 
-  kable_styling(bootstrap_options = c("striped",'bordered','condensed'),
-                full_width = F,
-                position = "center") %>% 
-  add_header_above(c("Lobster Metrics" = 5))
-
-summary.df.2 %>% 
-  kable(col.names = c('Statistic',
-                      "2012", 
-                     "2018", 
-                     "2012",
-                     '2018'),
+  kable(col.names = future.columns,
         align = c('l','c','c','c','c'),
-        caption = 'This is a test caption') %>% 
+        caption = 'This is a test caption',
+        italic = c(F,F,T,F,T)) %>% 
   kable_styling(bootstrap_options = c("striped",'bordered','condensed'),
                 full_width = F,
                 position = "center") %>% 
-  column_spec(c(1,3), border_right = T)%>% 
+  column_spec(c(1,3), border_right = T) %>%
   add_header_above(c(" " = 1, "MPA" = 2, "Unprotected" = 2)) %>% 
   add_header_above(c("Sample Summary Statistics - Spiny Lobster Size" = 5),
                    bold = T,
                    color = 'white',
                    background = 'grey')
-
 
 ```
 
@@ -291,7 +202,7 @@ summary.df.2 %>%
 ```{r}
 
 t.2012 <- t.test(mpa2012, nonmpa2012)
-d.2012 <- cohen.d(mpa2012,nonmpa2012)
+d.2012 <- cohen.d(mpa2012, nonmpa2012)
 
 t.2018 <- t.test(mpa2018, nonmpa2018)
 d.2018 <- cohen.d(mpa2018, nonmpa2018)
