@@ -88,11 +88,11 @@ comp.df.all <- lob.tidy %>%
       site == 'AQUE' ~ 'Arroyo Quemado',
       site == 'MOHK' ~ 'Mohawk',
       site == 'CARP' ~ 'Carpenteria',
-      site == 'NAPL' ~ 'Naples',
-      site == 'IVEE' ~ 'Isla Vista')
+      site == 'NAPL' ~ 'Naples (MPA)',
+      site == 'IVEE' ~ 'Isla Vista (MPA)')
   ) %>% 
   mutate(
-    sitename = factor(sitename, levels = c('Arroyo Quemado', 'Carpenteria', 'Mohawk', 'Naples','Isla Vista'))
+    sitename = factor(sitename, levels = c('Arroyo Quemado', 'Carpenteria', 'Mohawk', 'Naples (MPA)','Isla Vista (MPA)'))
   ) %>% 
   mutate(
     status = case_when(
@@ -143,7 +143,8 @@ ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
   geom_density(adjust = 1.5,alpha = 0.4) +
   scale_x_continuous(limits = c(30,160), 
                      expand = c(0.01,0.1)) +
-  scale_y_continuous(limits = c(0,0.045)) +
+  scale_y_continuous(limits = c(0,0.045),
+                     breaks = seq(0,0.08,0.04)) +
   facet_wrap(~sitename, scales = 'free') +
   annotate("text",
            x = 0.85,
@@ -236,7 +237,9 @@ nonmpa2018 <- nonmpa2018[!is.na(nonmpa2018)]
 ```{r}
 
 means <- c(mean(mpa2012), mean(mpa2018), mean(nonmpa2012), mean(nonmpa2018))
+means <- round(means,2)
 stdevs <- c(sd(mpa2012), sd(mpa2018), sd(nonmpa2012), sd(nonmpa2018))
+stdevs <- round(stdevs,2)
 ns <- c(length(mpa2012), length(mpa2018), length(nonmpa2012), length(nonmpa2018))
 status <- c('MPA','MPA','Non-MPA','Non-MPA')
 year <- c(2012,2018,2012,2018)
@@ -248,13 +251,11 @@ summary.df %>%
                      "Year", 
                      "Mean Size (mm)",
                      'St. Dev.',
-                     'Sample Size')
-        ) %>% 
+                     'Sample Size')) %>% 
   kable_styling(bootstrap_options = "striped", 
                 full_width = F,
-                position = "left"
-                ) %>% 
-  add_header_above(c("Lobster metrics" = 5))
+                position = "left") %>% 
+  add_header_above(c("Lobster Metrics" = 5))
 
 ```
 
