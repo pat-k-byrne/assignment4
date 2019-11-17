@@ -5,7 +5,15 @@ date: "11/13/2019"
 output: html_document
 ---
 
+### Introduction
+
+### Data and Methods
+
+### Results
+
+
 ```{r setup, include=FALSE}
+# Global options are set such that only graphics generated and written text are displayed in the knitted document
 knitr::opts_chunk$set(echo = F,
                       message = F,
                       warning = F)
@@ -19,6 +27,7 @@ library(here)
 library(effsize) 
 library(kableExtra) 
 
+# NA values are indicated and variable names are cleaned to lowercase_snakecase
 lob.df <- read_csv(here('lobster_abundance_sbc_lter.csv'),
                    na = '-99999') %>% 
   clean_names()
@@ -26,7 +35,7 @@ lob.df <- read_csv(here('lobster_abundance_sbc_lter.csv'),
 ```
 
 ```{r}
-# Data is cleaned 
+# Data is cleaned by ungrouping/uncounting observations of lobster size
 lob.tidy <- lob.df %>% 
   uncount(count)
 
@@ -49,7 +58,7 @@ lob.smry <- lob.tidy %>%
   )
 
 ```
-
+#### Population Size Trends
 ```{r}
 # This chunk creates a timeseries plot using the summary data frame created in the previous chunk
 ggplot() +
@@ -72,17 +81,22 @@ ggplot() +
         panel.grid.major = element_line(size = 0.5, 
                                         linetype = 'solid',
                                         colour = "grey90"),
-        legend.position = c(0.20,0.65),
+        legend.position = c(0.185,0.6),
         legend.background = element_rect(fill = 'white'),
         legend.text = element_text(size = 11),
         legend.key = element_rect(fill = NA),
-        plot.title = element_text(size = 16)) 
+        plot.title = element_text(size = 16),
+        plot.caption = element_text(hjust = 0,
+                                    )) 
 
 ```
+**Figure XX: Annual counts of Spiny Lobsters at five sites along the coast of the Santa Barbara Channel from the years 2012 through 2018.** Lines indicate the number of lobsters observed by divers during surveys taken during late summer. Counts at the two sites designated as Marine Protected Areas are displayed as solid lines, whereas the three unprotected sites are dashed lines.
+
 
 
 ```{r}
-# 
+# A data frame is created to use in comparing size distributions between 2012 and 2018
+# It also contains full site name and protection status variables
 comp.df.all <- lob.tidy %>% 
   filter(
     year %in% c(2012,2018)) %>% 
@@ -109,7 +123,7 @@ comp.df.all <- lob.tidy %>%
 ```
 
 ```{r}
-
+# This chunk creates the faceted density plot showing how distributions of lobster size has or has not changed between 2012 and 2018 at each of the sites
 ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
   geom_density(adjust = 1.5,alpha = 0.4) +
   scale_x_continuous(limits = c(30,160), 
@@ -117,11 +131,6 @@ ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
   scale_y_continuous(limits = c(0,0.045),
                      breaks = seq(0,0.08,0.04)) +
   facet_wrap(~sitename, scales = 'free') +
-  annotate("text",
-           x = 0.85,
-           y = 0.25,
-           label = "Bird nesting sites vulnerable to predation",
-           size = 3) +
   theme(axis.line = element_line(color = 'grey50',
                                  size = 0.5),
         panel.background = element_rect(fill = 'white',
@@ -135,87 +144,95 @@ ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
         legend.title = element_text(size = 12),
         plot.title = element_text(size = 17),
         plot.subtitle = element_text(size = 10)) +
-  labs(title = 'Spiny Lobster Size Distributions',
+  labs(title = 'Distribution of Lobster Size between 2012 and 2018 by Site',
        subtitle = 'Top Row: Unprotected Areas, Bottom Row: Marine Protected Areas',
        x = 'Estimated Size (mm)',
-       y = 'Density',
+       y = 'Estimated Kernel Density',
        fill = 'Year') 
 
 ```
-
+**Figure XX: Kernel density estimates of Spiny Lobster size at each site in the years 2012 and 2018.** The two plots in the bottom row correspond to the MPA sites, whereas the plots in the top row correspond to the unprotected sites. Pink coloration corresponds to the year 2012, whereas blue corresponds to 2018. 
 
 ```{r}
-
-mpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 & comp.df.all$status == 'Marine Protected Area']
+# In this chunk, we take subsets of the comparison data frame to create four vectors of lobster sizes based on the four combinations of protection status and year (2012 and 2018). NA values are removed
+mpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 
+                               & comp.df.all$status == 'Marine Protected Area']
 mpa2012 <- mpa2012[!is.na(mpa2012)]
 
 
-mpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 & comp.df.all$status == 'Marine Protected Area']
+mpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 
+                               & comp.df.all$status == 'Marine Protected Area']
 mpa2018 <- mpa2018[!is.na(mpa2018)]
 
 
-nonmpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 & comp.df.all$status == 'Unprotected Area']
+nonmpa2012 <- comp.df.all$size_mm[comp.df.all$year == 2012 
+                                  & comp.df.all$status == 'Unprotected Area']
 nonmpa2012 <- nonmpa2012[!is.na(nonmpa2012)]
 
 
-nonmpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 & comp.df.all$status == 'Unprotected Area']
+nonmpa2018 <- comp.df.all$size_mm[comp.df.all$year == 2018 
+                                  & comp.df.all$status == 'Unprotected Area']
 nonmpa2018 <- nonmpa2018[!is.na(nonmpa2018)]
 
 ```
 
 ```{r}
-
+# In this chunk, vectors of means, standard deviations, and sample sizes are first created. 
 means <- c(mean(mpa2012), mean(mpa2018), mean(nonmpa2012), mean(nonmpa2018))
-means <- round(means,2)
+means <- round(means,1)
 stdevs <- c(sd(mpa2012), sd(mpa2018), sd(nonmpa2012), sd(nonmpa2018))
-stdevs <- round(stdevs,2)
+stdevs <- round(stdevs,1)
 ns <- c(length(mpa2012), length(mpa2018), length(nonmpa2012), length(nonmpa2018))
 ns <- as.integer(ns)
 
+# Then, the values from these vectors are sorted into four vectors again based on year and protection status combinations.
+# These two steps could be combined to make this process more succinct. 
 mpa2012.sum <- c(means[1],stdevs[1],ns[1])
 mpa2018.sum <- c(means[2],stdevs[2],ns[2])
 nonmpa2012.sum <- c(means[3],stdevs[3],ns[3])
 nonmpa2018.sum <- c(means[4],stdevs[4],ns[4])
 metrics <- c('Mean (mm)','Std. Deviation (mm)','Sample Size')
 
+# Finally, those four vectors are combined into a single data frame of summary statistics
 summary.df <- tibble(metrics, mpa2012.sum, mpa2018.sum, nonmpa2012.sum, nonmpa2018.sum)
 
 ```
 
-
 ```{r}
-
-future.columns <- c('Statistic', '2012', '2018', '2012', '2018')
-
+# The summary data frame created in the previous chunk is displayed as a table
 summary.df %>% 
-  kable(col.names = future.columns,
+  kable(col.names = c('Statistic', '2012', '2018', '2012', '2018'),
         align = c('l','c','c','c','c'),
-        caption = 'Figure: This is a test caption',
+        caption = 'Figure XX: Summary statistics for samples of lobster sizes taken at MPA and non-MPA sites in the years 2012 and 2018.',
         italic = c(F,F,T,F,T)) %>% 
   kable_styling(bootstrap_options = c("striped",'bordered','condensed'),
                 full_width = F,
                 position = "center") %>% 
   column_spec(c(1,3), border_right = T) %>%
   add_header_above(c(" " = 1, "MPA" = 2, "Unprotected" = 2)) %>% 
-  add_header_above(c("Sample Summary Statistics - Spiny Lobster Size" = 5),
+  add_header_above(c("Sample Summary Statistics - Lobster Sizes" = 5),
                    bold = T,
                    color = 'white',
                    background = 'grey')
 
 ```
 
-
 ```{r}
+# T-tests are conducted on the four vectors created from the comparison data frame, and Cohen's D is computed
 
+# Difference in sizes between MPA and non-MPA sites in 2012
 t.2012 <- t.test(mpa2012, nonmpa2012)
 d.2012 <- cohen.d(mpa2012, nonmpa2012)
 
+# Difference in sizes between MPA and non-MPA sites in 2018
 t.2018 <- t.test(mpa2018, nonmpa2018)
 d.2018 <- cohen.d(mpa2018, nonmpa2018)
 
+# Difference in sizes between 2012 and 2018 for MPA sites
 t.mpa <- t.test(mpa2012, mpa2018)
 d.mpa <- cohen.d(mpa2012, mpa2018)
 
+# Difference in sizes between 2012 and 2018 for non-MPA sites
 t.nonmpa <- t.test(nonmpa2012, nonmpa2018)
 d.nonmpa <- cohen.d(nonmpa2012, nonmpa2018)
 
