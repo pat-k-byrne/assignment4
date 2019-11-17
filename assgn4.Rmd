@@ -8,9 +8,12 @@ output: html_document
 ### Introduction
 
 ### Data and Methods
+This report uses data collected by researchers from the Santa Barbara Coastal Long Term Ecological Research program (see References for full citation). To obtain this data, divers counted and visually estimated the size of spiny lobsters present at five different kelp forest study sites in the Santa Barbara Channel during surveys conducted annually in the late summer. Of these sites, two (Naples and Isla Vista) are located within or near California Fish and Game Comission Marine Protected Areas (MPAs), whereas the other three (Arroyo Quemado, Carpenteria, and Mohawk) are not. 
+
+
 
 ### Results
-
+The analysis contained in this report has three components. First, the abundance of lobsters at each of the sites throughout time is examined visually through a timeseries plot. Then, the change between 2012 and 2018 of the sizes of lobsters at each site is examined visually through plots of estimated kernel density of size. Finally, the change in lobster sizes between 2012 and 2018 is examined statistically, as is the difference of that change between MPA sites and unprotected sites. Student's T-tests are conducted on samples of lobster sizes taken at MPA sites and unprotected sites in 2012 and 2018, Cohen's D is computed, and the results are discussed.
 
 ```{r setup, include=FALSE}
 # Global options are set such that only graphics generated and written text are displayed in the knitted document
@@ -58,7 +61,9 @@ lob.smry <- lob.tidy %>%
   )
 
 ```
-#### Population Size Trends
+#### Lobster Abundance
+In an effort to understand broad trends in the population of spiny lobsters across all the sites studied
+
 ```{r}
 # This chunk creates a timeseries plot using the summary data frame created in the previous chunk
 ggplot() +
@@ -90,7 +95,7 @@ ggplot() +
                                     )) 
 
 ```
-**Figure XX: Annual counts of Spiny Lobsters at five sites along the coast of the Santa Barbara Channel from the years 2012 through 2018.** Lines indicate the number of lobsters observed by divers during surveys taken during late summer. Counts at the two sites designated as Marine Protected Areas are displayed as solid lines, whereas the three unprotected sites are dashed lines.
+**Figure XX: Annual counts of Spiny Lobsters at five sites along the coast of the Santa Barbara Channel from the years 2012 through 2018.** Lines indicate the number of lobsters observed by divers at a given site. Counts at the two sites designated as Marine Protected Areas are displayed as solid lines, whereas the three unprotected sites are dashed lines.
 
 
 
