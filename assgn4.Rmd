@@ -72,7 +72,7 @@ lob.smry <- lob.tidy %>%
 
 ```
 #### Lobster Abundance
-In an effort to understand broad trends in the population of spiny lobsters across all the sites studied, counts of lobsters present at each site were plotted for the years 2012-2018 below in Figure XX.
+In an effort to understand broad trends in the population of spiny lobsters across all the sites studied, counts of lobsters present at each site were plotted for the years 2012-2018 below in Figure 1.
 
 ```{r}
 # This chunk creates a timeseries plot using the summary data frame created in the previous chunk
@@ -105,9 +105,9 @@ ggplot() +
                                     )) 
 
 ```
-**Figure XX: Annual counts of Spiny Lobsters at five sites along the coast of the Santa Barbara Channel from the years 2012 through 2018.** *Lines indicate the number of lobsters observed by divers at a given site. Counts at the two sites designated as Marine Protected Areas are displayed as solid lines, whereas the three unprotected sites are dashed lines.*
+**Figure 1: Annual counts of Spiny Lobsters at five sites along the coast of the Santa Barbara Channel from the years 2012 through 2018.** *Lines indicate the number of lobsters observed by divers at a given site. Counts at the two sites designated as Marine Protected Areas are displayed as solid lines, whereas the three unprotected sites are dashed lines.*
 
-Examining the timeseries shown in Figure XX, a few trends can be observed. Populations grew by varying amounts across sites. In 2012, all sites had relatively similar numbers of lobsters, all below 100. In 2018, the number counted ranged from `r lob.smry$n[31]` at Arroyo Quemado (which had little net change between 2012 and 2018) to `r lob.smry$n[33]` at Isla Vista. Importantly, MPA sites tended to grow more than non-MPA sites, having the largest and 3^rd^-largest (by a relatively narrow margin) numbers of lobsters present by 2018. This is consistent with the expectation that, as fishing activity decreases, the number of lobsters present will increase.  Interestingly, the variations in population numbers were more consistent for between MPA sites than non-MPA sites. This might be explained by cosistency of fishing practices. At the non-MPA sites, it is reasonable to expect that fishing practices might not be the same at each site, leading to different numbers of lobsters being taken and different population changes. However, at MPA sites the practices are the same (i.e. no fishing), leading to more similar population changes.
+Examining the timeseries shown in Figure 1, a few trends can be observed. Populations grew by varying amounts across sites. In 2012, all sites had relatively similar numbers of lobsters, all below 100. In 2018, the number counted ranged from `r lob.smry$n[31]` at Arroyo Quemado (which had little net change between 2012 and 2018) to `r lob.smry$n[33]` at Isla Vista. Importantly, MPA sites tended to grow more than non-MPA sites, having the largest and 3^rd^-largest (by a relatively narrow margin) numbers of lobsters present by 2018. This is consistent with the expectation that, as fishing activity decreases, the number of lobsters present will increase.  Interestingly, the variations in population numbers were more consistent among MPA sites than non-MPA sites. This might be explained by cosistency of fishing practices. At the non-MPA sites, it is reasonable to expect that fishing practices might not be the same at each site, leading to different numbers of lobsters being taken and different population changes. However, at MPA sites the practices are the same (i.e. no fishing), leading to more similar population changes.
 
 
 ```{r}
@@ -139,7 +139,7 @@ comp.df.all <- lob.tidy %>%
 ```
 
 #### Lobster Size
-Next, distributions of lobster sizes at each site were plotted in order to see how the size of lobsters present changed between 2012 and 2018, shown below in Figure XX.
+Next, distributions of lobster sizes at each site were plotted in order to see how the size of lobsters present changed between 2012 and 2018, shown below in Figure 2.
 
 ```{r}
 # This chunk creates the faceted density plot showing how distributions of lobster size has or has not changed between 2012 and 2018 at each of the sites
@@ -170,9 +170,9 @@ ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
        fill = 'Year') 
 
 ```
-**Figure XX: Kernel density estimates of Spiny Lobster size at each site in the years 2012 and 2018.** *The two plots in the bottom row correspond to the MPA sites, whereas the plots in the top row correspond to the unprotected sites. Pink coloration corresponds to the year 2012, whereas blue corresponds to 2018.*
+**Figure 2: Kernel density estimates of Spiny Lobster size at each site in the years 2012 and 2018.** *The two plots in the bottom row correspond to the MPA sites, whereas the plots in the top row correspond to the unprotected sites. Pink coloration corresponds to the year 2012, whereas blue corresponds to 2018.*
 
-Examining the plots of estimated density, several key details are apparent. Most notably, distributions at both MPA sites showed shifts to the right, corresponding to an overall increase in lobster size. This is consistent with expectations. Without fishing pressures due to the MPA designation, lobsters would be more likely to live longer and grow larger, shifting the overall distribution of size upwards. Meanwhile, none of the non-MPA sights showed comparable shifts. Distributions for Arroyo Quemado and Carpenteria showed slight decreases in spread, and the distribution for Mohawk shifted slightly to the left. 
+Examining the plots of estimated density, several key details are apparent. Most notably, distributions at both MPA sites showed shifts to the right, corresponding to an overall increase in lobster size. This is consistent with expectations. Without fishing pressures due to the MPA designations, lobsters at these sites would be more likely to live longer and grow larger, shifting the overall distribution of size upwards. Meanwhile, none of the non-MPA sights showed comparable shifts. Distributions for Arroyo Quemado and Carpenteria showed slight decreases in spread, and the distribution for Mohawk appeared to shift slightly to the left. 
 
 ```{r}
 # In this chunk, we take subsets of the comparison data frame to create four vectors of lobster sizes based on the four combinations of protection status and year (2012 and 2018). NA values are removed
@@ -224,7 +224,7 @@ summary.df <- tibble(metrics, mpa2012.sum, mpa2018.sum, nonmpa2012.sum, nonmpa20
 summary.df %>% 
   kable(col.names = c('Statistic', '2012', '2018', '2012', '2018'),
         align = c('l','c','c','c','c'),
-        caption = 'Figure XX: Summary statistics for samples of lobster sizes taken at MPA and non-MPA sites in the years 2012 and 2018.',
+        caption = 'Figure 3: Summary statistics for samples of lobster sizes taken at MPA and non-MPA sites in the years 2012 and 2018.',
         italic = c(F,F,T,F,T)) %>% 
   kable_styling(bootstrap_options = c("striped",'bordered','condensed'),
                 full_width = F,
@@ -238,7 +238,7 @@ summary.df %>%
                    background = 'grey')
 
 ```
-Turning from a visual exploration to a more quantitative one, mean and standard deviations of lobster sizes at MPA and non-MPA sites were computed for 2012 and 2018. The values calculated can be found in Figure XX to the right. A brief examination confirms that they are consistent with expectations based on Figure XX. Mean size increased for MPA sites but not for non-MPA sites, the standard deviation decreased for non-MPA sites, and the difference in sample sizes is consistent with the trends in overall abundance shown in Figure XX. Furthermore, examining the sample sizes confirms what Figure XX suggests, that abundance of spiny lobsters increased more between 2012 and 2018 at MPA sites than it did at non-MPA sites
+Turning from a visual exploration to a more quantitative one, mean and standard deviations of lobster sizes at MPA and non-MPA sites were computed for 2012 and 2018. The values calculated can be found in Figure 3 to the right. A brief examination confirms that they are consistent with expectations based on Figure 2. Mean size increased for MPA sites but not for non-MPA sites, the standard deviation decreased for non-MPA sites, and the difference in sample sizes is consistent with the trends in overall abundance shown in Figure 1. Furthermore, examining the sample sizes confirms what Figure 1 suggests, that abundance of spiny lobsters increased more between 2012 and 2018 at MPA sites than it did at non-MPA sites.
 
 ```{r}
 # T-tests are conducted on the four vectors created from the comparison data frame, and Cohen's D is computed
@@ -262,7 +262,7 @@ d.nonmpa <- cohen.d(nonmpa2012, nonmpa2018)
 ```
 
 
-Next, Welch's t-tests were performed and Cohen's d statistics were computed (both at the 95% confidence level) in order to more formally explore the differences in mean sizes between years and levels of protection. The results of these tests are shown below in Figure XX.
+Next, Welch's t-tests were performed and Cohen's d statistics were computed (both at the 95% confidence level) in order to more formally explore the differences in mean sizes between years and levels of protection. The results of these tests are shown below in Figure 4.
 ```{r}
 # The results from the tests performed in the previous chunk are stored in a data frame and then displayed as a table just as the summary statistics were previous stored and displayed. We also store the bounds of the 95% confidence intervals in vectors for easy in-line referenceing
 testtype <- c("MPA Sites: '12 v. '18", "Non-MPA Sites: '12 v. '18", '2012: MPA v. Non-MPA', '2018: MPA v. Non-MPA')
@@ -310,7 +310,7 @@ testsummary.df <- tibble(testtype, diffs, tstats, dfs, pvals, ds)
 testsummary.df %>% 
   kable(col.names = c('Test Type', 'Difference in Means (mm)', 't', 'df', 'p-value', "Cohen's D"),
         align = c('l','c','c','c'),
-        caption = "Figure XX: Results of t-tests and Cohen's d calculations. t refers to the calculated t-statistic, and df refers to the degrees of freedom.") %>% 
+        caption = "Figure 4: Results of t-tests and Cohen's d calculations. t refers to the calculated t-statistic, and df refers to the degrees of freedom.") %>% 
   kable_styling(bootstrap_options = c("striped",'bordered','condensed'),
                 full_width = F,
                 position = "center") %>% 
@@ -322,12 +322,12 @@ testsummary.df %>%
   
 ```
 
-For MPA sites, we found a statistically significant difference in mean lobster sizes of `r testsummary.df$diffs[1]`$mm$ between 2012 and 2018 ($t$(`r testsummary.df$dfs[1]`) = `r testsummary.df$tstats[1]`, $p$ = `r testsummary.df$pvals[1]`, n = `r ns[1]` for 2012 and `r ns[2]` for 2018). Given that the effect size was also large (Cohen's $d$ = `r testsummary.df$ds[1]`), our results demonstrate that spiny lobster sizes at the sites studied increased by around 10$mm$ in the six years following the designation of those sites as protected areas. Moreover, we found no such difference in mean sizes for non-MPA sites, only a non-significant difference of `r testsummary.df$diffs[2]`$mm$ between 2012 and 2018($t$(`r testsummary.df$dfs[2]`) = `r testsummary.df$tstats[2]`, $p$ = `r testsummary.df$pvals[2]`, n = `r ns[3]` for 2012 and `r ns[4]` for 2018). These results are consistent with our expectations based on Figure XX and the shifts in location (or lack thereof) of the distributions that it showed.
+For MPA sites, we found a statistically significant difference in mean lobster sizes of `r testsummary.df$diffs[1]`*mm* between 2012 and 2018 (*t*(`r testsummary.df$dfs[1]`) = `r testsummary.df$tstats[1]`, *p* = `r testsummary.df$pvals[1]`, n = `r ns[1]` for 2012 and `r ns[2]` for 2018). Given that the effect size was also large (Cohen's *d* = `r testsummary.df$ds[1]`), our results demonstrate that spiny lobster sizes at the sites studied increased by around 10*mm* in the six years following the designation of those sites as protected areas. Moreover, we found no such difference in mean sizes for non-MPA sites, only a non-significant difference of `r testsummary.df$diffs[2]`*mm* between 2012 and 2018(*t*(`r testsummary.df$dfs[2]`) = `r testsummary.df$tstats[2]`, *p* = `r testsummary.df$pvals[2]`, n = `r ns[3]` for 2012 and `r ns[4]` for 2018). These results are consistent with our expectations based on Figure 2 and the shifts in location (or lack thereof) of the distributions that it showed.
 
-Moreover, our results also demonstrate a more subtle shift that Figure XX did not clearly reveal. We found that in 2012, there was a statistically significant difference in mean lobster sizes of `r testsummary.df$diffs[3]`$mm$ between MPA and non-MPA sites ($t$(`r testsummary.df$dfs[3]`) = `r testsummary.df$tstats[3]`, $p$ = `r testsummary.df$pvals[3]`, n = `r ns[1]` for MPA and `r ns[3]` for non-MPA). That is, the lobsters studied were on average around 7.5$mm$ bigger at non-MPA sites than MPA sites. Conversely, in 2018 there was a statistically significant difference in mean lobster sizes of `r testsummary.df$diffs[4]`$mm$ between MPA and non-MPA sites ($t$(`r testsummary.df$dfs[4]`) = `r testsummary.df$tstats[4]`, $p$ = `r testsummary.df$pvals[4]`, n = `r ns[2]` for MPA and `r ns[4]` for non-MPA). The lobsters studied were now on average around 4$mm$ bigger at MPA sites than non-MPA sites. 
+Moreover, our results also demonstrate a more subtle shift that Figure 2 did not clearly reveal. We found that in 2012, there was a statistically significant difference in mean lobster sizes of `r testsummary.df$diffs[3]`*mm* between MPA and non-MPA sites (*t*(`r testsummary.df$dfs[3]`) = `r testsummary.df$tstats[3]`, *p* = `r testsummary.df$pvals[3]`, n = `r ns[1]` for MPA and `r ns[3]` for non-MPA). That is, the lobsters studied were on average around 7.5*mm* bigger at non-MPA sites than MPA sites. Conversely, in 2018 there was a statistically significant difference in mean lobster sizes of `r testsummary.df$diffs[4]`*mm* between MPA and non-MPA sites (*t*(`r testsummary.df$dfs[4]`) = `r testsummary.df$tstats[4]`, *p* = `r testsummary.df$pvals[4]`, n = `r ns[2]` for MPA and `r ns[4]` for non-MPA). The lobsters studied were now on average around 4*mm* bigger at MPA sites than non-MPA sites. 
 
 ### Summary
-As shown in Figure XX and the sample sizes in Figure XX, a greater increase in lobster abundance between 2012 and 2018 was observed at MPA sites than at non-MPA sites. Mean length of lobsters surveyed increased between 2012 and 2018 at MPA sites while the same increase was not observed at non-MPA sites. During that same time, mean length of lobsters surveyed went from being lower at MPA sites to lower at non-MPA sites. Taken together, these findings appear to demonstrate the positive impact that Marine Protected Area designations have had on the health of the California Spiny Lobster populations in the Santa Barbara channel.
+As shown in Figure 1 and the sample sizes in Figure 3, a greater increase in lobster abundance between 2012 and 2018 was observed at MPA sites than at non-MPA sites. Mean length of lobsters surveyed increased between 2012 and 2018 at MPA sites while the same increase was not observed at non-MPA sites (Figures 2 and 4). During that same time, mean length of lobsters surveyed went from being lower at MPA sites to lower at non-MPA sites (Figure 3). Taken together, these findings appear to demonstrate the positive impact that Marine Protected Area designations have had on the health of the California Spiny Lobster populations in the Santa Barbara channel.
 
 ### References
 Reed D. 2019. SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012. Environmental Data Initiative. https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0. Dataset accessed 11/13/2019.
