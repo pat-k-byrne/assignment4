@@ -235,7 +235,7 @@ summary.df %>%
                    background = 'grey')
 
 ```
-Turning from a visual exploration to a more quantitative one, mean and standard deviations of lobster sizes at MPA and non-MPA sites were computed for 2012 and 2018. The values calculated can be found in Figure XX to the right. A brief examination confirms that they are consistent with expectation based on previous results. Mean size increased for MPA sites but not for non-MPA sites, the standard deviation decreased for non-MPA sites, and the difference in sample sizes is consistent with the trends in overall abundance shown in Figure XX. 
+Turning from a visual exploration to a more quantitative one, mean and standard deviations of lobster sizes at MPA and non-MPA sites were computed for 2012 and 2018. The values calculated can be found in Figure XX to the right. A brief examination confirms that they are consistent with expectations based on previous results. Mean size increased for MPA sites but not for non-MPA sites, the standard deviation decreased for non-MPA sites, and the difference in sample sizes is consistent with the trends in overall abundance shown in Figure XX. 
 
 ```{r}
 # T-tests are conducted on the four vectors created from the comparison data frame, and Cohen's D is computed
@@ -278,7 +278,7 @@ testsummary.df <- tibble(testtype, diffs, pvals, ds)
 testsummary.df %>% 
   kable(col.names = c('Test Type', 'Difference in Means', 'p-value', "Cohen's D"),
         align = c('l','c','c','c'),
-        caption = 'Figure XX:     ') %>% 
+        caption = 'Figure XX: Results of statistical analysis    ') %>% 
   kable_styling(bootstrap_options = c("striped",'bordered','condensed'),
                 full_width = F,
                 position = "center") %>% 
