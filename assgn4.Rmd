@@ -8,9 +8,9 @@ output: html_document
 ### Introduction
 
 ### Data and Methods
-This report uses data collected by researchers in the Santa Barbara Coastal Long Term Ecological Research program (see References for full citation). To obtain this data, divers counted and visually estimated the size of spiny lobsters present at five different kelp forest study sites in the Santa Barbara Channel during surveys conducted annually in the late summer. Of these sites, two (Naples and Isla Vista) are located within or near California Fish and Game Comission Marine Protected Areas (MPAs), whereas the other three (Arroyo Quemado, Carpenteria, and Mohawk) are not. 
+This report uses data collected by researchers in the Santa Barbara Coastal Long Term Ecological Research program (see References for full citation). To obtain this data, divers counted and visually estimated the size of spiny lobsters present at five different kelp forest study sites in the Santa Barbara Channel during surveys conducted annually in the late summer. Of these sites, two (Naples and Isla Vista) are located within or near California Fish and Game Comission Marine Protected Areas (MPAs), whereas the other three (Arroyo Quemado, Carpenteria, and Mohawk) are not. The data itself was stored within 'lobster_abundance_sbc_lter.csv' and was in the form of counts of lobsters of a given size observed at a site in a year. 
 
-The data itself was stored within 'lobster_abundance_sbc_lter.csv' and was in the form of counts of lobsters of a given sized observed at a site in a year. Dplyr::uncount() was used to spread the data into a more tidy format where each observation represented the time, place, and size metrics of an individual lobster. ggplot2::geom_line() was used to create a plot of lobster abundance through time at each site, and ggplot2::geom_density was used to create a plot of kernel density estimates for the distribution of lobster size at each site in 2012 and 2018. Summary statistics of mean and standard deviation of lobster size at MPA and non-MPA sites in 2012 and 2018 were computed and displayed in a table using the kableExtra package. stats::t.test() was used to perform two-sided Welch's t-tests at the 95% confidence level and assess the significance of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites. Finally, effsize::cohen.d was used to compute the value of Cohen's d at the 95% confidence level and assess the effect size of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites.
+Dplyr::uncount() was used to spread the data into a more tidy format where each observation represented the time, place, and size metrics of an individual lobster. ggplot2::geom_line() was used to create a plot of lobster abundance through time at each site, and ggplot2::geom_density() was used to create a plot of kernel density estimates for the distribution of lobster size at each site in 2012 and 2018. Summary statistics of mean and standard deviation of lobster size at MPA and non-MPA sites in 2012 and 2018 were computed and displayed in a table using the kableExtra package. stats::t.test() was used to perform two-sided Welch's t-tests at the 95% confidence level and assess the significance of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites. Finally, effsize::cohen.d() was used to compute the value of Cohen's d at the 95% confidence level and assess the effect size of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites.
 
 This analysis was performed in Rstudio version 1.2.1335 running R version 3.6.1. The following packages were used in this report:
 
@@ -258,8 +258,36 @@ d.nonmpa <- cohen.d(nonmpa2012, nonmpa2018)
 
 ```
 
-Next, Welch's t-tests were performed and Cohen's d statistics were computed (both at the 95% confidence level) in order to more formally explore the differences in mean sizes between years and levels of protection.
 
+Next, Welch's t-tests were performed and Cohen's d statistics were computed (both at the 95% confidence level) in order to more formally explore the differences in mean sizes between years and levels of protection. The results of this test are shown below in Figure XX.
+```{r}
+# The results from the tests performed in the previous chunk are stored in a data frame and then displayed as a table
+testtype <- c("MPA Sites: '12 v. '18", "Non-MPA Sites: '12 v. '18", '2012: MPA v. Non-MPA', '2018: MPA v. Non-MPA')
+pvals <- c(t.mpa$p.value, t.nonmpa$p.value, t.2012$p.value, t.2018$p.value)
+pvals <- round(pvals, 4)
+ds <- c(d.mpa$estimate, d.nonmpa$estimate, d.2012$estimate, d.2018$estimate)
+ds <- round(ds, 2)
+diffs <- as.numeric(c((t.mpa$estimate[2] - t.mpa$estimate[1]), 
+           (t.nonmpa$estimate[2] - t.nonmpa$estimate[1]), 
+           (t.2012$estimate[2] - t.2012$estimate[1]), 
+           (t.2018$estimate[2] - t.2018$estimate[1])))
+diffs <- round(diffs, 2)
+
+testsummary.df <- tibble(testtype, diffs, pvals, ds)
+
+testsummary.df %>% 
+  kable(col.names = c('Test Type', 'Difference in Means', 'p-value', "Cohen's D"),
+        align = c('l','c','c','c'),
+        caption = 'Figure XX:     ') %>% 
+  kable_styling(bootstrap_options = c("striped",'bordered','condensed'),
+                full_width = F,
+                position = "center") %>% 
+  add_header_above(c("Lobster Size Test Results" = 4),
+                   bold = T,
+                   color = 'white',
+                   background = 'grey')
+  
+```
 
 
 
