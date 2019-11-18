@@ -393,6 +393,7 @@ summary {
 <li>here, version 0.1</li>
 <li>effsize, version 0.7.6</li>
 <li>kableExtra, version 1.1.0</li>
+<li>scales, version 1.0.0</li>
 </ul>
 </div>
 <div id="results" class="section level3">
@@ -455,7 +456,7 @@ Statistic
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;border-right:1px solid;">
+<td style="text-align:left;border-right:1px solid;font-weight: bold;border-right:1px solid;">
 Mean (mm)
 </td>
 <td style="text-align:center;">
@@ -472,7 +473,7 @@ Mean (mm)
 </td>
 </tr>
 <tr>
-<td style="text-align:left;border-right:1px solid;">
+<td style="text-align:left;border-right:1px solid;font-weight: bold;border-right:1px solid;">
 Std. Deviation (mm)
 </td>
 <td style="text-align:center;">
@@ -489,7 +490,7 @@ Std. Deviation (mm)
 </td>
 </tr>
 <tr>
-<td style="text-align:left;border-right:1px solid;">
+<td style="text-align:left;border-right:1px solid;font-weight: bold;border-right:1px solid;">
 Sample Size
 </td>
 <td style="text-align:center;">
@@ -507,17 +508,17 @@ Sample Size
 </tr>
 </tbody>
 </table>
-<p>Turning from a visual exploration to a more quantitative one, mean and standard deviations of lobster sizes at MPA and non-MPA sites were computed for 2012 and 2018. The values calculated can be found in Figure XX to the right. A brief examination confirms that they are consistent with expectations based on previous results. Mean size increased for MPA sites but not for non-MPA sites, the standard deviation decreased for non-MPA sites, and the difference in sample sizes is consistent with the trends in overall abundance shown in Figure XX.</p>
-Next, Welch’s t-tests were performed and Cohen’s d statistics were computed (both at the 95% confidence level) in order to more formally explore the differences in mean sizes between years and levels of protection. The results of this test are shown below in Figure XX.
+<p>Turning from a visual exploration to a more quantitative one, mean and standard deviations of lobster sizes at MPA and non-MPA sites were computed for 2012 and 2018. The values calculated can be found in Figure XX to the right. A brief examination confirms that they are consistent with expectations based on Figure XX. Mean size increased for MPA sites but not for non-MPA sites, the standard deviation decreased for non-MPA sites, and the difference in sample sizes is consistent with the trends in overall abundance shown in Figure XX. Furthermore, examining the sample sizes confirms what Figure XX suggests, that abundance of spiny lobsters increased more between 2012 and 2018 at MPA sites than it did at non-MPA sites</p>
+Next, Welch’s t-tests were performed and Cohen’s d statistics were computed (both at the 95% confidence level) in order to more formally explore the differences in mean sizes between years and levels of protection. The results of these tests are shown below in Figure XX.
 <table class="table table-striped table-bordered table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-Figure XX: Results of statistical analysis
+Figure XX: Results of t-tests and Cohen’s d calculations. t refers to the calculated t-statistic, and df refers to the degrees of freedom.
 </caption>
 <thead>
 <tr>
-<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; color: white !important;padding-right: 4px; padding-left: 4px; background-color: grey !important;" colspan="4">
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; color: white !important;padding-right: 4px; padding-left: 4px; background-color: grey !important;" colspan="6">
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-Lobster Size Test Results
+Statistical Test Results - Lobster Sizes
 </div>
 </th>
 </tr>
@@ -526,9 +527,15 @@ Lobster Size Test Results
 Test Type
 </th>
 <th style="text-align:center;">
-Difference in Means
+Difference in Means (mm)
 </th>
 <th style="text-align:center;">
+t
+</th>
+<th style="text-align:center;">
+df
+</th>
+<th style="text-align:left;">
 p-value
 </th>
 <th style="text-align:center;">
@@ -538,27 +545,39 @@ Cohen’s D
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
 MPA Sites: ’12 v. ’18
 </td>
 <td style="text-align:center;">
-10.19
+-10.19
 </td>
 <td style="text-align:center;">
-0.0000
+-4.69
+</td>
+<td style="text-align:center;">
+32.50
+</td>
+<td style="text-align:left;">
+4.76e-05
 </td>
 <td style="text-align:center;">
 -0.87
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
 Non-MPA Sites: ’12 v. ’18
 </td>
 <td style="text-align:center;">
--1.30
+1.30
 </td>
 <td style="text-align:center;">
+1.33
+</td>
+<td style="text-align:center;">
+296.01
+</td>
+<td style="text-align:left;">
 0.1831
 </td>
 <td style="text-align:center;">
@@ -566,28 +585,40 @@ Non-MPA Sites: ’12 v. ’18
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
 2012: MPA v. Non-MPA
 </td>
 <td style="text-align:center;">
-7.55
+-7.55
 </td>
 <td style="text-align:center;">
-0.0023
+-3.25
+</td>
+<td style="text-align:center;">
+42.09
+</td>
+<td style="text-align:left;">
+2.26e-03
 </td>
 <td style="text-align:center;">
 -0.61
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
 2018: MPA v. Non-MPA
 </td>
 <td style="text-align:center;">
--3.95
+3.95
 </td>
 <td style="text-align:center;">
-0.0000
+7.31
+</td>
+<td style="text-align:center;">
+1239.51
+</td>
+<td style="text-align:left;">
+4.88e-13
 </td>
 <td style="text-align:center;">
 0.35
@@ -595,7 +626,17 @@ Non-MPA Sites: ’12 v. ’18
 </tr>
 </tbody>
 </table>
+<p>For MPA sites, we found a statistically significant difference in mean lobster sizes of -10.19<span class="math inline">\(mm\)</span> between 2012 and 2018 (<span class="math inline">\(t\)</span>(32.5) = -4.69, <span class="math inline">\(p\)</span> = 4.76e-05, n = 32 for 2012 and 1244 for 2018). Given that the effect size was also large (Cohen’s <span class="math inline">\(d\)</span> = -0.87), our results demonstrate that spiny lobster sizes at the sites studied increased by around 10<span class="math inline">\(mm\)</span> in the six years following the designation of those sites as protected areas. Moreover, we found no such difference in mean sizes for non-MPA sites, only a non-significant difference of 1.3<span class="math inline">\(mm\)</span> between 2012 and 2018(<span class="math inline">\(t\)</span>(296.01) = 1.33, <span class="math inline">\(p\)</span> = 0.1831, n = 199 for 2012 and 561 for 2018). These results are consistent with our expectations based on Figure XX and the shifts in location (or lack thereof) of the distributions that it showed.</p>
+<p>Moreover, our results also demonstrate a more subtle shift that Figure XX did not clearly reveal. We found that in 2012, there was a statistically significant difference in mean lobster sizes of -7.55<span class="math inline">\(mm\)</span> between MPA and non-MPA sites (<span class="math inline">\(t\)</span>(42.09) = -3.25, <span class="math inline">\(p\)</span> = 2.26e-03, n = 32 for MPA and 199 for non-MPA). That is, the lobsters studied were on average around 7.5<span class="math inline">\(mm\)</span> bigger at non-MPA sites than MPA sites. Conversely, in 2018 there was a statistically significant difference in mean lobster sizes of 3.95<span class="math inline">\(mm\)</span> between MPA and non-MPA sites (<span class="math inline">\(t\)</span>(1239.51) = 7.31, <span class="math inline">\(p\)</span> = 4.88e-13, n = 1244 for MPA and 561 for non-MPA). The lobsters studied were now on average around 4<span class="math inline">\(mm\)</span> bigger at MPA sites than non-MPA sites.</p>
 </div>
+</div>
+<div id="summary" class="section level3">
+<h3>Summary</h3>
+<p>As shown in Figure XX and the sample sizes in Figure XX, a greater increase in lobster abundance between 2012 and 2018 was observed at MPA sites than at non-MPA sites. Mean length of lobsters surveyed increased between 2012 and 2018 at MPA sites while the same increase was not observed at non-MPA sites. During that same time, mean length of lobsters surveyed went from being lower at MPA sites to lower at non-MPA sites. Taken together, these findings appear to demonstrate the positive impact that Marine Protected Area designations have had on the health of the California Spiny Lobster populations in the Santa Barbara channel.</p>
+</div>
+<div id="references" class="section level3">
+<h3>References</h3>
+<p>Reed D. 2019. SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0" class="uri">https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0</a>. Dataset accessed 11/13/2019.</p>
 </div>
 
 
