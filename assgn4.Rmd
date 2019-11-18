@@ -10,7 +10,15 @@ output: html_document
 ### Data and Methods
 This report uses data collected by researchers from the Santa Barbara Coastal Long Term Ecological Research program (see References for full citation). To obtain this data, divers counted and visually estimated the size of spiny lobsters present at five different kelp forest study sites in the Santa Barbara Channel during surveys conducted annually in the late summer. Of these sites, two (Naples and Isla Vista) are located within or near California Fish and Game Comission Marine Protected Areas (MPAs), whereas the other three (Arroyo Quemado, Carpenteria, and Mohawk) are not. 
 
+The data itself was stored within 'lobster_abundance_sbc_lter.csv' and was in the form of counts of lobsters of a given sized observed at a site in a year. Dplyr::uncount() was used to spread the data into a more tidy format where each observation represented the time, place, and size metrics of an individual lobster. ggplot2::geom_line() was used to create a plot of lobster abundance through time at each site, and ggplot2::geom_density was used to create a plot of kernel density estimates for the distribution of lobster size at each site in 2012 and 2018. Summary statistics of mean and standard deviation of lobster size at MPA and non-MPA sites in 2012 and 2018 were computed and displayed in a table using the kableExtra package. stats::t.test() was used to perform two-sided Welch's t-tests at the 95% confidence level and assess the significance of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites. Finally, effsize::cohen.d was used to compute the value of Cohen's d and assess the effect size of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites.
 
+This analysis was performed in Rstudio version 1.2.1335 running R version 3.6.1. The following packages were used in this report:
+
+- tidyverse, version 1.2.1
+- janitor, version 1.2.0
+- here, version 0.1
+- effsize, version 0.7.6
+- kableExtra, version 1.1.0
 
 ### Results
 The analysis contained in this report has three components. First, the abundance of lobsters at each of the sites throughout time is examined visually through a timeseries plot. Then, the change between 2012 and 2018 of the sizes of lobsters at each site is examined visually through plots of estimated kernel density of size. Finally, the change in lobster sizes between 2012 and 2018 is examined statistically, as is the difference of that change between MPA sites and unprotected sites. Student's T-tests are conducted on samples of lobster sizes taken at MPA sites and unprotected sites in 2012 and 2018, Cohen's D is computed, and the results are discussed.
@@ -135,7 +143,7 @@ ggplot(comp.df.all, aes(x = size_mm, group = cyear, fill = cyear)) +
                      expand = c(0.01,0.1)) +
   scale_y_continuous(limits = c(0,0.045),
                      breaks = seq(0,0.08,0.04)) +
-  facet_wrap(~sitename, scales = 'free') +
+  facet_wrap(~sitename, scales = 'free_x') +
   theme(axis.line = element_line(color = 'grey50',
                                  size = 0.5),
         panel.background = element_rect(fill = 'white',
