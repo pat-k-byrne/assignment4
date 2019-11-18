@@ -10,7 +10,7 @@ output: html_document
 ### Data and Methods
 This report uses data collected by researchers in the Santa Barbara Coastal Long Term Ecological Research program (see References for full citation). To obtain this data, divers counted and visually estimated the size of spiny lobsters present at five different kelp forest study sites in the Santa Barbara Channel during surveys conducted annually in the late summer. Of these sites, two (Naples and Isla Vista) are located within or near California Fish and Game Comission Marine Protected Areas (MPAs), whereas the other three (Arroyo Quemado, Carpenteria, and Mohawk) are not. 
 
-The data itself was stored within 'lobster_abundance_sbc_lter.csv' and was in the form of counts of lobsters of a given sized observed at a site in a year. Dplyr::uncount() was used to spread the data into a more tidy format where each observation represented the time, place, and size metrics of an individual lobster. ggplot2::geom_line() was used to create a plot of lobster abundance through time at each site, and ggplot2::geom_density was used to create a plot of kernel density estimates for the distribution of lobster size at each site in 2012 and 2018. Summary statistics of mean and standard deviation of lobster size at MPA and non-MPA sites in 2012 and 2018 were computed and displayed in a table using the kableExtra package. stats::t.test() was used to perform two-sided Welch's t-tests at the 95% confidence level and assess the significance of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites. Finally, effsize::cohen.d was used to compute the value of Cohen's d and assess the effect size of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites.
+The data itself was stored within 'lobster_abundance_sbc_lter.csv' and was in the form of counts of lobsters of a given sized observed at a site in a year. Dplyr::uncount() was used to spread the data into a more tidy format where each observation represented the time, place, and size metrics of an individual lobster. ggplot2::geom_line() was used to create a plot of lobster abundance through time at each site, and ggplot2::geom_density was used to create a plot of kernel density estimates for the distribution of lobster size at each site in 2012 and 2018. Summary statistics of mean and standard deviation of lobster size at MPA and non-MPA sites in 2012 and 2018 were computed and displayed in a table using the kableExtra package. stats::t.test() was used to perform two-sided Welch's t-tests at the 95% confidence level and assess the significance of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites. Finally, effsize::cohen.d was used to compute the value of Cohen's d at the 95% confidence level and assess the effect size of the difference in mean lobster size between 2012 and 2018 and between MPA and non-MPA sites.
 
 This analysis was performed in Rstudio version 1.2.1335 running R version 3.6.1. The following packages were used in this report:
 
@@ -137,7 +137,7 @@ comp.df.all <- lob.tidy %>%
 ```
 
 #### Lobster Size
-Next, distributions of lobster sizes at each site were created in order to see how the size of lobsters present changed between 2012 and 2018, shown below in Figure XX.
+Next, distributions of lobster sizes at each site were plotted in order to see how the size of lobsters present changed between 2012 and 2018, shown below in Figure XX.
 
 ```{r}
 # This chunk creates the faceted density plot showing how distributions of lobster size has or has not changed between 2012 and 2018 at each of the sites
@@ -216,7 +216,7 @@ metrics <- c('Mean (mm)','Std. Deviation (mm)','Sample Size')
 summary.df <- tibble(metrics, mpa2012.sum, mpa2018.sum, nonmpa2012.sum, nonmpa2018.sum)
 
 ```
-In order to more formally explore the difference between MPA and non-MPA sites of changes of lobster sizes from 2012 to 2018 
+ 
 ```{r}
 # The summary data frame created in the previous chunk is displayed as a table
 summary.df %>% 
@@ -235,6 +235,7 @@ summary.df %>%
                    background = 'grey')
 
 ```
+Turning from a visual exploration to a more quantitative one, mean and standard deviations of lobster sizes at MPA and non-MPA sites were computed for 2012 and 2018. The values calculated can be found in Figure XX to the right. A brief examination confirms that they are consistent with expectation based on previous results. Mean size increased for MPA sites but not for non-MPA sites, the standard deviation decreased for non-MPA sites, and the difference in sample sizes is consistent with the trends in overall abundance shown in Figure XX. 
 
 ```{r}
 # T-tests are conducted on the four vectors created from the comparison data frame, and Cohen's D is computed
@@ -256,4 +257,9 @@ t.nonmpa <- t.test(nonmpa2012, nonmpa2018)
 d.nonmpa <- cohen.d(nonmpa2012, nonmpa2018)
 
 ```
+
+Next, Welch's t-tests were performed and Cohen's d statistics were computed (both at the 95% confidence level) in order to more formally explore the differences in mean sizes between years and levels of protection.
+
+
+
 
